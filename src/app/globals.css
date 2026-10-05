@@ -1,0 +1,527 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Elementis-inspired Design System ─── */
+/* Dark navy + warm sand/ivory palette, DM Sans typography */
+
+@theme {
+  /* ─── Core brand colors ─── */
+  --color-bg:               #0a0f1e;   /* Deep navy — primary background */
+  --color-bg-alt:           #111827;   /* Slightly lighter navy */
+  --color-sand:             #d1ccbf;   /* Warm ivory — primary text */
+  --color-sand-dim:         rgba(209, 204, 191, 0.5); /* Muted text */
+  --color-accent:           #fea619;   /* Amber — school brand accent */
+  --color-accent-dim:       rgba(254, 166, 25, 0.15);
+  --color-popup-bg:         #e8e4d9;   /* Light sage — menu popup background */
+  --color-popup-text:       #0a0f1e;   /* Dark on popup */
+
+  /* ─── Legacy tokens (used by other pages) — remapped ─── */
+  --color-primary:          #0a0f1e;
+  --color-primary-container:#131b2e;
+  --color-on-primary:       #ffffff;
+  --color-secondary:        #855300;
+  --color-secondary-container: #fea619;
+  --color-on-secondary-container: #2a1700;
+  --color-secondary-fixed:  #ffddb8;
+  --color-on-secondary:     #ffffff;
+  --color-surface:          #FAF9F6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f0f0eb;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-dim:      #cbdbf5;
+  --color-background:       #0a0f1e;
+  --color-on-background:    #d1ccbf;
+  --color-on-surface:       #0b1c30;
+  --color-on-surface-variant: #6b7280;
+  --color-outline:          #76777d;
+  --color-outline-variant:  rgba(209, 204, 191, 0.15);
+  --color-tertiary:         #000000;
+  --color-on-tertiary:      #ffffff;
+  --color-error:            #ba1a1a;
+
+  /* ─── Typography — DM Sans (closest to Basis Grotesque) ─── */
+  --font-sans:              'DM Sans', sans-serif;
+  --font-serif:             'DM Serif Display', serif;
+  --font-display-lg:        'DM Sans', sans-serif;
+  --font-display-lg-mobile: 'DM Sans', sans-serif;
+  --font-body-md:           'DM Sans', sans-serif;
+  --font-body-lg:           'DM Sans', sans-serif;
+  --font-headline-md:       'DM Sans', sans-serif;
+  --font-headline-sm:       'DM Sans', sans-serif;
+  --font-label-caps:        'DM Sans', sans-serif;
+  --font-body-sm:            'DM Sans', sans-serif;
+
+  /* ─── Typography sizes — used by inner pages ─── */
+  --text-display-lg:         clamp(3rem, 5vw, 5rem);
+  --text-display-lg-mobile:  clamp(2.25rem, 8vw, 3rem);
+  --text-display-md:         clamp(2rem, 3.5vw, 3rem);
+  --text-body-lg:            clamp(1rem, 1.15vw, 1.125rem);
+  --text-body-md:            clamp(0.875rem, 1vw, 1rem);
+  --text-body-sm:            clamp(0.75rem, 0.9vw, 0.875rem);
+  --text-headline-md:        clamp(1.5rem, 2.5vw, 2rem);
+  --text-headline-sm:        clamp(1.25rem, 1.8vw, 1.5rem);
+  --text-label-caps:         clamp(0.6rem, 0.8vw, 0.7rem);
+
+  /* ─── Spacing ─── */
+  --spacing-container-max:      1440px;
+  --spacing-section-gap:        160px;
+  --spacing-section-gap-mobile: 80px;
+  --spacing-grid-gutter:        24px;
+  --spacing-base:               8px;
+
+  /* ─── Radii ─── */
+  --radius:     0.125rem;
+  --radius-lg:  0.25rem;
+  --radius-xl:  0.5rem;
+  --radius-full: 9999px;
+
+  /* ─── Elementis cubic-bezier easing ─── */
+  --ease-elementis: cubic-bezier(0.24, 0.43, 0.15, 0.97);
+
+  /* ─── Tailwind color aliases — used by inner-page components ─── */
+  /* These map to the core tokens above so everything stays in sync  */
+  --color-navy:             #0a0f1e;   /* alias for --color-bg */
+  --color-navy-alt:         #111827;   /* alias for --color-bg-alt */
+  --color-sand:             #d1ccbf;   /* alias — matches --color-sand */
+  --color-accent:           #fea619;   /* alias — matches --color-accent */
+}
+
+@layer base {
+  html {
+    scroll-behavior: auto; /* Lenis handles this */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    @apply font-sans;
+  }
+  html::-webkit-scrollbar { display: none; }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-sand);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    background: var(--color-sand);
+    color: var(--color-bg);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+@layer utilities {
+
+  /* ─── Container ─── */
+  .container-page {
+    max-width: var(--spacing-container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 4.4vw, 4rem);
+    padding-right: clamp(1rem, 4.4vw, 4rem);
+  }
+
+  /* ─── Section spacing ─── */
+  .section-py {
+    padding-top: var(--spacing-section-gap-mobile);
+    padding-bottom: var(--spacing-section-gap-mobile);
+  }
+  @media (min-width: 768px) {
+    .section-py {
+      padding-top: var(--spacing-section-gap);
+      padding-bottom: var(--spacing-section-gap);
+    }
+  }
+
+  /* ─── Elementis signature link underline animation ─── */
+  .el-link {
+    color: currentColor;
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .el-link::before {
+    background: currentColor;
+    bottom: -1px;
+    content: "";
+    height: 1px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.8s cubic-bezier(0.24, 0.43, 0.15, 0.97);
+    width: 100%;
+  }
+  .el-link:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .el-link.active::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* ─── Masking text animation (text reveals line by line) ─── */
+  .masking-text {
+    display: block;
+    overflow: hidden;
+    margin-top: -0.15em;
+    padding-bottom: 0.15em;
+  }
+  .masking-text .line {
+    display: block;
+    transform: translateY(120%);
+    transition: transform 1s var(--ease-elementis);
+    will-change: transform;
+  }
+  .masking-text.revealed .line {
+    transform: translateY(0);
+  }
+  .masking-text.revealed .line:nth-child(2) { transition-delay: 0.08s; }
+  .masking-text.revealed .line:nth-child(3) { transition-delay: 0.16s; }
+  .masking-text.revealed .line:nth-child(4) { transition-delay: 0.24s; }
+
+  /* ─── Generic reveal (scroll-triggered) ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-slow {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-slow.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Gradients ─── */
+  .solar-gradient {
+    background: linear-gradient(135deg, #fea619 0%, #ffb95f 100%);
+  }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, #0a0f1e 0%, #111827 60%, #1a2740 100%);
+  }
+
+  /* ─── Legacy glass panels (used in other pages) ─── */
+  .glass-panel {
+    background: rgba(10, 15, 30, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(209, 204, 191, 0.1);
+  }
+  .glass-card {
+    background: rgba(10, 15, 30, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(209, 204, 191, 0.12);
+  }
+
+  /* ─── Shadows ─── */
+  .shadow-ambient {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.1),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  .shadow-ambient-hover {
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.15),
+      0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  .ambient-shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.12); }
+  .ambient-shadow-md { box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 12px 32px rgba(0,0,0,0.18); }
+  .ambient-shadow-1  { box-shadow: 0 2px 10px rgba(0,0,0,0.12), 0 6px 20px rgba(0,0,0,0.1); }
+
+  /* ─── Interactive states ─── */
+  .hover-lift { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-4px); }
+
+  .interactive-depth { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease; }
+  .interactive-depth:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+
+  /* ─── Animations ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .animate-slow-reveal { animation: fadeInUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+  @keyframes countUp {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(1.05); }
+  }
+  .animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
+
+  /* ─── Scroll indicator line animation ─── */
+  @keyframes slideDown {
+    0%   { transform: translateY(-100%); }
+    60%  { transform: translateY(100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  /* ─── Navbar menu hover effects (moved from dangerouslySetInnerHTML) ─── */
+  li:hover .menu-border-fill {
+    transform: scaleX(1) !important;
+    transform-origin: left !important;
+  }
+  .menu-arrow-icon {
+    transform: translate(-120%, 120%);
+  }
+  @media (max-width: 1024px) {
+    .menu-arrow-icon {
+      transform: translate(0, 0);
+    }
+  }
+  @media (min-width: 1025px) {
+    li:hover .menu-arrow-icon {
+      transform: translate(0, 0);
+    }
+  }
+
+  /* ─── Animation delays ─── */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .animation-delay-0   { animation-delay: 0ms; }
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+
+  /* ─── Masonry grid (Student Life page) ─── */
+  .masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .masonry-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 280px;
+    }
+    .masonry-item-tall { grid-row: span 2; }
+    .masonry-item-wide { grid-column: span 2; }
+  }
+  .masonry-grid > div,
+  .masonry-grid > a {
+    min-height: 220px;
+    position: relative;
+  }
+  @media (min-width: 768px) {
+    .masonry-grid > div,
+    .masonry-grid > a { min-height: unset; }
+  }
+
+  /* ─── Scrollbar hide ─── */
+  .hide-scroll,
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scroll::-webkit-scrollbar,
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* ─── Elementis border (hairline separator) ─── */
+  .el-border {
+    background-color: rgba(209, 204, 191, 0.15);
+    height: 1px;
+    width: 100%;
+  }
+
+  /* ─── Misc spacing aliases ─── */
+  .pb-section-gap-mobile { padding-bottom: var(--spacing-section-gap-mobile); }
+  .mb-section-gap-mobile { margin-bottom: var(--spacing-section-gap-mobile); }
+  @media (min-width: 768px) {
+    .pb-section-gap { padding-bottom: var(--spacing-section-gap); }
+    .mb-section-gap { margin-bottom: var(--spacing-section-gap); }
+  }
+
+  /* ─── Feature Slideshow — mobile responsive overrides ─── */
+  @media (max-width: 767px) {
+    /* Stack the 12-col grid vertically on mobile */
+    .slideshow-grid {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .slideshow-image {
+      width: 100% !important;
+      height: clamp(14rem, 56vw, 20rem) !important;
+      position: relative !important;
+      margin-bottom: 2rem;
+    }
+    .slideshow-image > div {
+      position: absolute !important;
+      inset: 0 !important;
+    }
+    .slideshow-title {
+      height: auto !important;
+      min-height: 5rem;
+      margin-top: 1.5rem !important;
+      margin-bottom: 1.5rem !important;
+    }
+    .slideshow-desc {
+      height: auto !important;
+      min-height: 8rem;
+    }
+  }
+
+  /* ─── Programs Slider — mobile ─── */
+  @media (max-width: 767px) {
+    .programs-header {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}
+
+@theme inline {
+  --font-heading:               var(--font-sans);
+  --font-sans:               var(--font-sans);
+  --color-sidebar-ring:               var(--sidebar-ring);
+  --color-sidebar-border:               var(--sidebar-border);
+  --color-sidebar-accent-foreground:               var(--sidebar-accent-foreground);
+  --color-sidebar-accent:               var(--sidebar-accent);
+  --color-sidebar-primary-foreground:               var(--sidebar-primary-foreground);
+  --color-sidebar-primary:               var(--sidebar-primary);
+  --color-sidebar-foreground:               var(--sidebar-foreground);
+  --color-sidebar:               var(--sidebar);
+  --color-chart-5:               var(--chart-5);
+  --color-chart-4:               var(--chart-4);
+  --color-chart-3:               var(--chart-3);
+  --color-chart-2:               var(--chart-2);
+  --color-chart-1:               var(--chart-1);
+  --color-ring:               var(--ring);
+  --color-input:               var(--input);
+  --color-border:               var(--border);
+  --color-destructive:               var(--destructive);
+  --color-accent-foreground:               var(--accent-foreground);
+  --color-accent:               var(--accent);
+  --color-muted-foreground:               var(--muted-foreground);
+  --color-muted:               var(--muted);
+  --color-secondary-foreground:               var(--secondary-foreground);
+  --color-secondary:               var(--secondary);
+  --color-primary-foreground:               var(--primary-foreground);
+  --color-primary:               var(--primary);
+  --color-popover-foreground:               var(--popover-foreground);
+  --color-popover:               var(--popover);
+  --color-card-foreground:               var(--card-foreground);
+  --color-card:               var(--card);
+  --color-foreground:               var(--foreground);
+  --color-background:               var(--background);
+  --radius-sm:               calc(var(--radius) * 0.6);
+  --radius-md:               calc(var(--radius) * 0.8);
+  --radius-lg:               var(--radius);
+  --radius-xl:               calc(var(--radius) * 1.4);
+  --radius-2xl:               calc(var(--radius) * 1.8);
+  --radius-3xl:               calc(var(--radius) * 2.2);
+  --radius-4xl:               calc(var(--radius) * 2.6);
+}
+
+/* ─── Website theme (navy/amber) — default :root ─── */
+:root {
+  --background: #0a0f1e;
+  --foreground: #d1ccbf;
+  --card: #111827;
+  --card-foreground: #d1ccbf;
+  --popover: #111827;
+  --popover-foreground: #d1ccbf;
+  --primary: #fea619;
+  --primary-foreground: #0a0f1e;
+  --secondary: rgba(209, 204, 191, 0.1);
+  --secondary-foreground: #d1ccbf;
+  --muted: rgba(209, 204, 191, 0.08);
+  --muted-foreground: rgba(209, 204, 191, 0.5);
+  --accent: #fea619;
+  --accent-foreground: #0a0f1e;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #fea619;
+  --chart-1: #fea619;
+  --chart-2: #f0f0eb;
+  --chart-3: #9ca3af;
+  --chart-4: #6b7280;
+  --chart-5: #374151;
+  --radius: 0.5rem;
+  --sidebar: #111827;
+  --sidebar-foreground: #d1ccbf;
+  --sidebar-primary: #fea619;
+  --sidebar-primary-foreground: #0a0f1e;
+  --sidebar-accent: rgba(209, 204, 191, 0.08);
+  --sidebar-accent-foreground: #d1ccbf;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #fea619;
+}
+
+/* ─── Portal theme (black & white) ─── */
+/* Applied via .portal-scope class on the portal layout */
+.portal-scope {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #09090b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #09090b;
+  --chart-1: #09090b;
+  --chart-2: #3f3f46;
+  --chart-3: #71717a;
+  --chart-4: #a1a1aa;
+  --chart-5: #d4d4d8;
+  --radius: 0.5rem;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #09090b;
+  --sidebar-primary: #09090b;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #09090b;
+  /* Override body bg for portal */
+  background-color: #f4f4f5;
+  color: #09090b;
+}
